@@ -1,8 +1,13 @@
 <h2>Rented Movies</h2>
 
-<ul>
-    <li *ngFor="let movie of movies">
-        {{movie.title}}
-    </li>
-</ul>
+<div *ngFor="let renting of rentings" class="movie">
+    <img src={{renting.movie.movieCoverUrl}}>
+    <div class="movieDetails bordered">
+        <div class="movieTitle">{{renting.movie.title}}</div>
+        <div class="movieRelease">{{renting.movie.releaseYear}}</div>
+    </div>
+    <div class="movieButton bordered">
+        <button (click)="returnMovie(renting.movie.id)" type="button" class="btn btn-danger bordered">Return Movie</button>
+    </div>
+</div>
 

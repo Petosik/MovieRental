@@ -10,25 +10,59 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require("@angular/core");
 var movie_1 = require("./movie");
+var renting_1 = require("./renting");
 var movie_service_1 = require("./movie.service");
 var ListComponent = (function () {
     function ListComponent(movieService) {
         this.movieService = movieService;
-        this.movies = [];
     }
+    ListComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.movies = [];
+        this.selectedMovie = new movie_1.Movie(null, null, null, null, null, null, null, null, null, null);
+        this.resetSelectedMovie();
+        this.movieService.getAvailableMovies().subscribe(function (data) { return _this.movies = data; }, function (error) { return _this.movies = []; });
+    };
+    ListComponent.prototype.selectMovie = function (movie) {
+        this.selectedMovie = movie;
+    };
+    ListComponent.prototype.resetSelectedMovie = function () {
+        this.selectMovie(new movie_1.Movie(null, null, null, null, null, null, null, null, null, null));
+    };
+    ListComponent.prototype.getMovieFromList = function (id) {
+        for (var _i = 0, _a = this.movies; _i < _a.length; _i++) {
+            var movie = _a[_i];
+            if (movie.id == id) {
+                return movie;
+            }
+        }
+        return null;
+    };
     ListComponent.prototype.addMovie = function () {
         var _this = this;
-        this.movieService.addMovie(this.selectedMovie).subscribe(function (data) { return _this.movies.push(data); }, function (error) { return _this.selectedMovie = null; });
+        this.movieService.addMovie(this.selectedMovie).subscribe(function (data) {
+            _this.movies.push(data);
+        }, function (error) { return _this.resetSelectedMovie(); });
+        this.resetSelectedMovie();
     };
     ListComponent.prototype.editMovie = function (movie) {
         this.movieService.editMovie(movie);
     };
-    ListComponent.prototype.ngOnInit = function () {
+    ListComponent.prototype.rentMovie = function (id) {
         var _this = this;
-        this.selectedMovie = new movie_1.Movie(null, null, null, null, null, null, false, null, null);
-        this.movieService.getAvailableMovies().subscribe(function (data) { return _this.movies = data; }, function (error) { return _this.movies = []; });
+        this.selectMovie(this.getMovieFromList(id));
+        if (this.selectedMovie == null) {
+            return console.log("Could not find movie to rent");
+        }
+        var movieRenting = new renting_1.Renting(null, null, "123123123", null, null, this.selectedMovie);
+        this.movieService.rentMovie(movieRenting).subscribe(function (data) {
+            _this.selectMovie(data.movie);
+        }, function (error) { return _this.resetSelectedMovie(); });
+        if (this.getMovieFromList(this.selectedMovie.id) == this.selectedMovie) {
+            this.movies.splice(this.movies.indexOf(this.selectedMovie), 1);
+        }
+        this.resetSelectedMovie();
     };
-    ListComponent.prototype.selectMovie = function (movie) { this.selectedMovie = movie; };
     return ListComponent;
 }());
 ListComponent = __decorate([

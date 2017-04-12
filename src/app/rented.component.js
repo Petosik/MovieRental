@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("@angular/core");
+var renting_1 = require("./renting");
 var movie_service_1 = require("./movie.service");
 var RentedComponent = (function () {
     function RentedComponent(movieService) {
@@ -16,7 +17,31 @@ var RentedComponent = (function () {
     }
     RentedComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.movieService.getRentedMovies().subscribe(function (data) { return _this.movies = data; }, function (error) { return _this.movies = []; });
+        this.rentings = [];
+        this.selectedRenting = new renting_1.Renting(null, null, null, null, null, null);
+        this.movieService.getActiveRentings().subscribe(function (data) { return _this.rentings = data; }, function (error) { return _this.rentings = []; });
+    };
+    RentedComponent.prototype.resetSelectedMovie = function () {
+        this.selectedRenting = new renting_1.Renting(null, null, null, null, null, null);
+    };
+    RentedComponent.prototype.getRentingByMovieId = function (id) {
+        for (var _i = 0, _a = this.rentings; _i < _a.length; _i++) {
+            var renting = _a[_i];
+            if (renting.movie.id == id) {
+                return renting;
+            }
+        }
+        return null;
+    };
+    RentedComponent.prototype.returnMovie = function (id) {
+        var _this = this;
+        this.selectedRenting = this.getRentingByMovieId(id);
+        if (this.selectedRenting == null) {
+            return console.log("Could not find movie to return");
+        }
+        this.movieService.returnMovie(this.selectedRenting).subscribe(function (data) { return _this.selectedRenting = data; }, function (error) { return _this.selectedRenting = null; });
+        this.rentings.splice(this.rentings.indexOf(this.selectedRenting), 1);
+        this.resetSelectedMovie();
     };
     return RentedComponent;
 }());

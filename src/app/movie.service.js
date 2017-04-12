@@ -21,17 +21,37 @@ var MovieService = (function () {
     MovieService.prototype.getAvailableMovies = function () {
         return this.http.get("http://localhost:8080/available").map(function (response) { return response.json(); });
     };
+    ;
+    MovieService.prototype.getActiveRentings = function () {
+        return this.http.get("http://localhost:8080/allRent").map(function (response) { return response.json(); });
+    };
+    ;
     MovieService.prototype.getRentedMovies = function () {
         return this.http.get("http://localhost:8080/rented").map(function (response) { return response.json(); });
     };
+    ;
+    MovieService.prototype.rentMovie = function (renting) {
+        var headers = new http_2.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_2.RequestOptions({ headers: headers });
+        return this.http.post("http://localhost:8080/rentMovie", JSON.stringify(renting), options).map(function (response) { return response.json(); });
+    };
+    ;
+    MovieService.prototype.returnMovie = function (renting) {
+        var headers = new http_2.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_2.RequestOptions({ headers: headers });
+        return this.http.post("http://localhost:8080/returnMovie", JSON.stringify(renting), options).map(function (response) { return response.json(); });
+    };
+    ;
     MovieService.prototype.addMovie = function (movie) {
         var headers = new http_2.Headers({ 'Content-Type': 'application/json' });
         var options = new http_2.RequestOptions({ headers: headers });
         return this.http.post("http://localhost:8080/newMovie", JSON.stringify(movie), options).map(function (response) { return response.json(); });
     };
+    ;
     MovieService.prototype.editMovie = function (movie) {
         this.http.post("http://localhost:8080/updateMovie", movie);
     };
+    ;
     return MovieService;
 }());
 MovieService = __decorate([

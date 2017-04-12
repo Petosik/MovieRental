@@ -1,17 +1,17 @@
 "use strict";
 var Movie = (function () {
-    function Movie(_id, _title, _director, _genre, _productionCountry, _duration, _isRented, _movieCoverUrl, _releaseYear) {
-        this.id = _id;
-        this.title = _title;
-        this.director = _director;
-        this.genre = _genre;
-        this.productionCountry = _productionCountry;
-        this.duration = _duration;
-        this.isRented = _isRented;
-        this.movieCoverUrl = _movieCoverUrl;
-        this.releaseYear = _releaseYear;
+    function Movie(id, modificationCounter, title, director, genre, releaseYear, productionCountry, duration, movieCoverUrl, rented) {
+        this.id = id;
+        this.modificationCounter = modificationCounter;
+        this.title = title;
+        this.director = director;
+        this.genre = genre;
+        this.releaseYear = releaseYear;
+        this.productionCountry = productionCountry;
+        this.duration = duration;
+        this.movieCoverUrl = movieCoverUrl;
+        this.rented = rented;
     }
-    ;
     return Movie;
 }());
 exports.Movie = Movie;
