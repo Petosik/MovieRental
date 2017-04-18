@@ -1,40 +1,70 @@
-// import { MovieService } from '../movie.service'
-// import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-// import { BrowserModule, By } from '@angular/platform-browser';
-// import { DebugElement } from '@angular/core';
-// import { RouterLinkStubDirective, RouterOutletStubComponent } from './router-stubs';
-// import { RouterTestingModule } from '@angular/router/testing';
-// import { FormsModule } from '@angular/forms';
-// import { HttpModule } from '@angular/http';
-// describe('MovieService', function () {
-//   let de: DebugElement;
-//   let comp: MovieService;
-//   let fixture: ComponentFixture<MovieService>;
-//   let links: RouterLinkStubDirective[];
-//   let linkDes: DebugElement[];
-//     beforeEach(async(() => {
-//     TestBed.configureTestingModule({
-//       imports: [BrowserModule, HttpModule, FormsModule, RouterTestingModule],
-//       declarations: [MovieService, RouterLinkStubDirective, RouterOutletStubComponent]
-//     })
-//       .overrideComponent(MovieService, {
-//         set: {
-//           templateUrl: '/base/src/app/templates/mainView.html',
-//           styleUrls: ['/base/src/styles.css'],
-//         }
-//       })
-//       .compileComponents();
-//   }));
-//   beforeEach(() => {
-//     fixture = TestBed.createComponent(MovieService);
-//     comp = fixture.componentInstance;
-//     fixture.detectChanges();
-//     // find DebugElements with an attached RouterLinkStubDirective
-//     linkDes = fixture.debugElement
-//       .queryAll(By.directive(RouterLinkStubDirective));
-//     // get the attached link directive instances using the DebugElement injectors
-//     links = linkDes
-//       .map(de => de.injector.get(RouterLinkStubDirective) as RouterLinkStubDirective);
-//   });
-// }); 
+"use strict";
+var testing_1 = require("@angular/core/testing");
+var http_1 = require("@angular/http");
+var testing_2 = require("@angular/http/testing");
+var movie_service_1 = require("../movie.service");
+describe('MovieService', function () {
+    beforeEach(function () {
+        testing_1.TestBed.configureTestingModule({
+            imports: [http_1.HttpModule],
+            providers: [movie_service_1.MovieService, testing_2.MockBackend,
+                { provide: http_1.XHRBackend, useClass: testing_2.MockBackend }]
+        });
+    });
+    describe('methods test with mocked backend', function () {
+        it('should return available movies as list wrapped by observable', testing_1.inject([movie_service_1.MovieService, testing_2.MockBackend], function (service, mockBackend) {
+            var mockResponse = {
+                data: [
+                    {
+                        id: 1, modificationCounter: 0, title: 'title', director: 'director', Genre: 'Horror', productionCountry: 'pCountry',
+                        productionYear: '1999', rating: 5, posterUrl: 'http://url', duration: 100, available: true
+                    },
+                    {
+                        id: 2, modificationCounter: 0, title: 'title2', director: 'director2', Genre: 'Horror', productionCountry: 'pCountry',
+                        productionYear: '1999', rating: 5, posterUrl: 'http://url', duration: 100, available: true
+                    }
+                ]
+            };
+            mockBackend.connections.subscribe(function (connection) {
+                connection.mockRespond(new http_1.Response(new http_1.ResponseOptions({
+                    body: JSON.stringify(mockResponse)
+                })));
+            });
+            service.getAvailableMovies().subscribe(function (data) {
+                expect(data.length).toBe(2);
+                expect(data[0].title).toEqual('title');
+                expect(data[1].title).toEqual('title2');
+            });
+        }));
+        it('should return active rentings as list wrapped by observable', testing_1.inject([movie_service_1.MovieService, testing_2.MockBackend], function (service, mockBackend) {
+            var nullDate = null;
+            var mockResponse = {
+                data: [
+                    {
+                        id: 1, modificationCounter: 0, renterPeselNumber: "93110706872", rentingDate: 1492515383000, returningDate: nullDate, movie: {
+                            id: 1, modificationCounter: 0, title: 'title', director: 'director', Genre: 'Horror', productionCountry: 'pCountry',
+                            productionYear: '1999', rating: 5, posterUrl: 'http://url', duration: 100, available: true
+                        }
+                    },
+                    {
+                        id: 2, modificationCounter: 0, renterPeselNumber: "93110706872", rentingDate: 1482515383000, returningDate: nullDate, movie: {
+                            id: 2, modificationCounter: 0, title: 'title2', director: 'director2', Genre: 'Horror', productionCountry: 'pCountry',
+                            productionYear: '1999', rating: 5, posterUrl: 'http://url', duration: 100, available: true
+                        }
+                    },
+                ]
+            };
+            mockBackend.connections.subscribe(function (connection) {
+                connection.mockRespond(new http_1.Response(new http_1.ResponseOptions({
+                    body: JSON.stringify(mockResponse)
+                })));
+            });
+            service.getActiveRentings().subscribe(function (data) {
+                expect(data.length).toBe(2);
+                expect(data[0].movie.title).toEqual('title');
+                expect(data[1].movie.title).toEqual('title2');
+            });
+        }));
+    });
+});
 //# sourceMappingURL=movie.service.spec.js.map

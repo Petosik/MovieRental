@@ -63,7 +63,7 @@ var RentedComponent = (function () {
         this.resetSelectedRenting();
         var renting = this.getRentingByMovieId(id);
         this.selectRenting(renting);
-        var timeDiff = Math.abs(this.selectedRenting.rentingDate - new Date().getTime());
+        var timeDiff = Math.abs(this.selectedRenting.rentingDate.getTime() - new Date().getTime());
         if (timeDiff >= 345600000) {
             this.daysOfDelay = Math.ceil(timeDiff / (1000 * 3600 * 24)) - 4;
             this.chargeOfDelay = 5 * this.daysOfDelay;
