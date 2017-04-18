@@ -49,7 +49,9 @@ var MovieService = (function () {
     };
     ;
     MovieService.prototype.editMovie = function (movie) {
-        this.http.post("http://localhost:8080/updateMovie", movie);
+        var headers = new http_2.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_2.RequestOptions({ headers: headers });
+        return this.http.post("http://localhost:8080/updateMovie", JSON.stringify(movie), options).map(function (response) { return response.json(); });
     };
     ;
     return MovieService;

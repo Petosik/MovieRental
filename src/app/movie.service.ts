@@ -1,5 +1,5 @@
-import { Movie } from './movie'
-import { Renting } from './renting'
+import { Movie } from './movie';
+import { Renting } from './renting';
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
@@ -44,7 +44,9 @@ export class MovieService {
         return this.http.post("http://localhost:8080/newMovie", JSON.stringify(movie), options).map(response => response.json());
     };
 
-    editMovie(movie: Movie) {
-        this.http.post("http://localhost:8080/updateMovie", movie);
+    editMovie(movie: Movie): Observable<Movie> {
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post("http://localhost:8080/updateMovie", JSON.stringify(movie), options).map(response => response.json());
     };
 }

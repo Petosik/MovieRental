@@ -10,9 +10,12 @@ var platform_browser_1 = require("@angular/platform-browser");
 var router_1 = require("@angular/router");
 var forms_1 = require("@angular/forms");
 var http_1 = require("@angular/http");
+//import { MovieService } from './movie.service';
 var app_component_1 = require("./app.component");
 var list_component_1 = require("./list.component");
 var rented_component_1 = require("./rented.component");
+var filter_pipe_1 = require("./filter.pipe");
+var sort_pipe_1 = require("./sort.pipe");
 var appRoutes = [
     { path: 'a', component: app_component_1.AppComponent },
     { path: 'list', component: list_component_1.ListComponent },
@@ -35,9 +38,9 @@ AppModule = __decorate([
             router_1.RouterModule.forRoot(appRoutes),
             forms_1.FormsModule,
             http_1.HttpModule,
-            http_1.JsonpModule
+            http_1.JsonpModule,
         ],
-        declarations: [app_component_1.AppComponent, list_component_1.ListComponent, rented_component_1.RentedComponent],
+        declarations: [app_component_1.AppComponent, list_component_1.ListComponent, rented_component_1.RentedComponent, filter_pipe_1.FilterPipe, sort_pipe_1.SortPipe],
         bootstrap: [app_component_1.AppComponent]
     })
 ], AppModule);

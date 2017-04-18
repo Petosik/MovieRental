@@ -1,13 +1,70 @@
-<h2>Rented Movies</h2>
+<!-- Return Movie Modal -->
+<div class="modal fade" id="returnMovieModal" tabindex="-1" role="dialog" aria-labelledby="returnMovieModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Rent Movie Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                       <span aria-hidden="true">&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="returnMovieModalLabel"> Return movie: {{selectedRenting.movie.title}} </h4>
+            </div>
 
-<div *ngFor="let renting of rentings" class="movie">
-    <img src={{renting.movie.movieCoverUrl}}>
-    <div class="movieDetails bordered">
-        <div class="movieTitle">{{renting.movie.title}}</div>
-        <div class="movieRelease">{{renting.movie.releaseYear}}</div>
-    </div>
-    <div class="movieButton bordered">
-        <button (click)="returnMovie(renting.movie.id)" type="button" class="btn btn-danger bordered">Return Movie</button>
+            <!-- Return Movie Modal Body -->
+            <div class="modal-body">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Rental fee: 5$</label>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Late interest: {{daysOfDelay}} * 5$ = {{chargeOfDelay}}$</label>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <input type="checkbox" name="isDamaged" [(ngModel)]='isDamaged' (change)="changeDamaged()">
+                            <label class="control-label">Damaged VHS</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <input type="checkbox" name="isUncapped" [(ngModel)]='isUncapped' (change)="changeUncapped()">
+                            <label class="control-label">Uncapped VHS</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Total charge: {{selectedRenting.charge}} $</label>
+                    </div>
+
+                    <button (click)="returnMovie(selectedRenting.movie.id)" type="submit" class="btn btn-primary" data-dismiss="modal">Return</button>
+                </form>
+            </div>
+            <!-- Return Movie Modal Footer -->
+            <div class="modal-footer">
+                <button (click)="selectedRenting.charge=0; isDamaged=false; isUncapped=false" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
 </div>
+<!-- End Of Return Movie Modal -->
 
+<h2>Rented Movies</h2>
+<div id="controlPanel">
+    <form id="filter">
+        <label>Filter Movies by title</label>
+        <input type="text" [(ngModel)]="term" name="filter_input" />
+    </form>
+</div>
+
+<div *ngFor="let renting of rentings | filter:term" class="movie">
+    <img src={{renting.movie.movieCoverUrl}}>
+    <div class="movieDetails">
+        <div class="movieTitle">{{renting.movie.title}}</div>
+        <div class="movieRelease">Renting Date: {{renting.rentingDate | date:'medium'}}</div>
+        <div class="movieRelease">Renter's' Pesel: {{renting.renterPeselNumber}}</div>
+    </div>
+    <div class="movieButton">
+        <button (click)="focusOnRenting(renting.movie.id); changeCharge(5)" type="button" class="btn btn-danger" data-toggle="modal"
+            data-target="#returnMovieModal">Return Movie</button>
+    </div>
+</div>

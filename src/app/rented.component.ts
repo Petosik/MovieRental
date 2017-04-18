@@ -12,6 +12,11 @@ import { MovieService } from './movie.service'
 export class RentedComponent {
     private selectedRenting: Renting;
     private rentings: Renting[];
+    public isDamaged: boolean;
+    public isUncapped: boolean;
+    public daysOfDelay: number;
+    public chargeOfDelay: number;
+
 
     constructor(
         private movieService: MovieService
@@ -19,14 +24,18 @@ export class RentedComponent {
 
     private ngOnInit() {
         this.rentings = [];
-        this.selectedRenting = new Renting(null, null, null, null, null, null);
+        this.selectedRenting = new Renting(null, null, null, null, null, new Movie(null, null, null, null, null, null, null, null, null, null), 0);
+        this.isDamaged = false;
+        this.isUncapped = false;
+        this.daysOfDelay = 0;
+        this.chargeOfDelay = 0;
         this.movieService.getActiveRentings().subscribe(
             data => this.rentings = data,
             error => this.rentings = []);
     }
 
-    private resetSelectedMovie() {
-        this.selectedRenting = new Renting(null, null, null, null, null, null);
+    private resetSelectedRenting() {
+        this.selectedRenting = new Renting(null, null, null, null, null, new Movie(null, null, null, null, null, null, null, null, null, null), 0);
     }
 
     private getRentingByMovieId(id: number): Renting {
@@ -38,6 +47,44 @@ export class RentedComponent {
         return null;
     }
 
+    private selectRenting(renting: Renting) {
+        this.selectedRenting = renting;
+    }
+
+    changeDamaged() {
+        if (this.isDamaged)
+            this.changeCharge(20);
+        else
+            this.changeCharge(-20);
+    }
+
+    changeUncapped() {
+        if (this.isUncapped)
+            this.changeCharge(10);
+        else
+            this.changeCharge(-10);
+    }
+
+    getRentings(): Renting[] {
+        return this.rentings;
+    }
+
+    getSelectedRenting(): Renting {
+        return this.selectedRenting;
+    }
+
+    focusOnRenting(id: number) {
+        this.resetSelectedRenting();
+        let renting: Renting = this.getRentingByMovieId(id);
+        this.selectRenting(renting);
+        let timeDiff = Math.abs(this.selectedRenting.rentingDate - new Date().getTime());
+        if (timeDiff >= 345600000) {
+            this.daysOfDelay = Math.ceil(timeDiff / (1000 * 3600 * 24)) - 4;
+            this.chargeOfDelay = 5 * this.daysOfDelay;
+            this.changeCharge(this.chargeOfDelay);
+        }
+    }
+
     returnMovie(id: number) {
         this.selectedRenting = this.getRentingByMovieId(id);
         if (this.selectedRenting == null) {
@@ -46,8 +93,14 @@ export class RentedComponent {
 
         this.movieService.returnMovie(this.selectedRenting).subscribe(
             data => this.selectedRenting = data,
-            error => this.selectedRenting = null);
+            error => this.resetSelectedRenting());
         this.rentings.splice(this.rentings.indexOf(this.selectedRenting), 1);
-        this.resetSelectedMovie();
+        this.isDamaged = false;
+        this.isUncapped = false;
     }
+
+    changeCharge(amount: number) {
+        this.selectedRenting.charge += amount;
+    }
+
 }

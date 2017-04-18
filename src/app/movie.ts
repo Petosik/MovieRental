@@ -11,5 +11,4 @@ export class Movie {
         public movieCoverUrl: string,
         public rented: boolean,
     ) { }
-
 }

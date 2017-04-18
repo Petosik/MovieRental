@@ -20,14 +20,11 @@ var ListComponent = (function () {
         var _this = this;
         this.movies = [];
         this.selectedMovie = new movie_1.Movie(null, null, null, null, null, null, null, null, null, null);
+        this.order = 'title';
+        this.reverse = false;
+        this.renterPesel = "";
         this.resetSelectedMovie();
         this.movieService.getAvailableMovies().subscribe(function (data) { return _this.movies = data; }, function (error) { return _this.movies = []; });
-    };
-    ListComponent.prototype.selectMovie = function (movie) {
-        this.selectedMovie = movie;
-    };
-    ListComponent.prototype.resetSelectedMovie = function () {
-        this.selectMovie(new movie_1.Movie(null, null, null, null, null, null, null, null, null, null));
     };
     ListComponent.prototype.getMovieFromList = function (id) {
         for (var _i = 0, _a = this.movies; _i < _a.length; _i++) {
@@ -38,6 +35,32 @@ var ListComponent = (function () {
         }
         return null;
     };
+    ListComponent.prototype.selectMovie = function (movie) {
+        this.selectedMovie = movie;
+    };
+    ListComponent.prototype.resetSelectedMovie = function () {
+        this.selectMovie(new movie_1.Movie(null, null, null, null, null, null, null, null, null, null));
+    };
+    ListComponent.prototype.getMovies = function () {
+        return this.movies;
+    };
+    ListComponent.prototype.getSelectedMovie = function () {
+        return this.selectedMovie;
+    };
+    ListComponent.prototype.getOrder = function () {
+        return this.order;
+    };
+    ListComponent.prototype.isReverse = function () {
+        return this.reverse;
+    };
+    ListComponent.prototype.getRenterPesel = function () {
+        return this.renterPesel;
+    };
+    ListComponent.prototype.focusOnMovie = function (id) {
+        this.renterPesel = "";
+        var movie = this.getMovieFromList(id);
+        this.selectMovie(movie);
+    };
     ListComponent.prototype.addMovie = function () {
         var _this = this;
         this.movieService.addMovie(this.selectedMovie).subscribe(function (data) {
@@ -45,16 +68,17 @@ var ListComponent = (function () {
         }, function (error) { return _this.resetSelectedMovie(); });
         this.resetSelectedMovie();
     };
-    ListComponent.prototype.editMovie = function (movie) {
-        this.movieService.editMovie(movie);
-    };
-    ListComponent.prototype.rentMovie = function (id) {
+    ListComponent.prototype.editMovie = function () {
         var _this = this;
-        this.selectMovie(this.getMovieFromList(id));
+        this.movieService.editMovie(this.selectedMovie).subscribe(function (data) { return _this.selectedMovie = data; }, function (error) { return _this.resetSelectedMovie(); });
+        this.resetSelectedMovie();
+    };
+    ListComponent.prototype.rentMovie = function () {
+        var _this = this;
         if (this.selectedMovie == null) {
             return console.log("Could not find movie to rent");
         }
-        var movieRenting = new renting_1.Renting(null, null, "123123123", null, null, this.selectedMovie);
+        var movieRenting = new renting_1.Renting(null, null, this.renterPesel, null, null, this.selectedMovie, 0);
         this.movieService.rentMovie(movieRenting).subscribe(function (data) {
             _this.selectMovie(data.movie);
         }, function (error) { return _this.resetSelectedMovie(); });
@@ -62,6 +86,24 @@ var ListComponent = (function () {
             this.movies.splice(this.movies.indexOf(this.selectedMovie), 1);
         }
         this.resetSelectedMovie();
+    };
+    ListComponent.prototype.sortByName = function () {
+        if (this.order == "title") {
+            this.reverse = !this.reverse;
+        }
+        else {
+            this.reverse = false;
+            this.order = "title";
+        }
+    };
+    ListComponent.prototype.sortByReleaseYear = function () {
+        if (this.order == "release year") {
+            this.reverse = !this.reverse;
+        }
+        else {
+            this.reverse = false;
+            this.order = "release year";
+        }
     };
     return ListComponent;
 }());

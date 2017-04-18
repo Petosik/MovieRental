@@ -1,171 +1,218 @@
+<!-- New Movie Modal -->
+<div class="modal fade" id="newMovieModal" tabindex="-1" role="dialog" aria-labelledby="newMovieModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- New Movie Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                       <span aria-hidden="true">&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="newMovieModalLabel">
+                    New Movie
+                </h4>
+            </div>
+
+            <!-- New Movie Modal Body -->
+            <div class="modal-body">
+                <form class="form-horizontal" role="form" #newMovieForm="ngForm">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Title</label>
+                        <div class="col-sm-4">
+                            <input [(ngModel)]="selectedMovie.title" name="title" type="text" class="form-control" placeholder="Title" required/>
+                        </div>
+                        <label class="col-sm-2 control-label">Genre</label>
+                        <div class="col-sm-4">
+                            <input [(ngModel)]="selectedMovie.genre" name="genre" type="text" class="form-control" placeholder="Genre" required/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Director</label>
+                        <div class="col-sm-5">
+                            <input [(ngModel)]="selectedMovie.director" name="director" type="text" class="form-control" placeholder="Director" required/>
+                        </div>
+                        <label class="col-sm-3 control-label">Release Year</label>
+                        <div class="col-sm-2">
+                            <input [(ngModel)]="selectedMovie.releaseYear" name="releaseYear" type="number" class="form-control" placeholder="year" required
+                                minlength="4" maxlength="4" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Production Country</label>
+                        <div class="col-sm-4">
+                            <input [(ngModel)]="selectedMovie.productionCountry" name="productionCountry" type="text" class="form-control" placeholder="Production Country"
+                                required />
+                        </div>
+                        <label class="col-sm-2 control-label">Duration</label>
+                        <div class="col-sm-2">
+                            <input [(ngModel)]="selectedMovie.duration" name="duration" type="number" class="form-control" placeholder="mins" required/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Cover Url</label>
+                        <div class="col-sm-10">
+                            <input [(ngModel)]="selectedMovie.movieCoverUrl" name="coverUrl" type="text" class="form-control" placeholder="https://"
+                                required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-10 col-sm-2">
+                            <button [disabled]="!newMovieForm.valid" (click)="addMovie()" type="submit" class="btn btn-primary" data-dismiss="modal">Add</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- New Movie Modal Footer -->
+            <div class="modal-footer">
+                <button (click)="resetSelectedMovie()" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Of New Movie Modal -->
+
+<!-- Edit Movie Modal -->
+<div class="modal fade" id="editMovieModal" tabindex="-1" role="dialog" aria-labelledby="editMovieModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Edit Movie Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                       <span aria-hidden="true">&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="editMovieModalLabel"> Edit Movie </h4>
+            </div>
+
+            <!-- Edit Movie Modal Body -->
+            <div class="modal-body">
+                <form #editMovieForm="ngForm" class="form-horizontal" role="form">
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Title</label>
+                        <div class="col-sm-4">
+                            <input [(ngModel)]="selectedMovie.title" name="title" type="text" class="form-control" placeholder="Title" required/>
+                        </div>
+                        <label class="col-sm-2 control-label">Genre</label>
+                        <div class="col-sm-4">
+                            <input [(ngModel)]="selectedMovie.genre" name="genre" type="text" class="form-control" placeholder="Genre" required/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Director</label>
+                        <div class="col-sm-5">
+                            <input [(ngModel)]="selectedMovie.director" name="director" type="text" class="form-control" placeholder="Director" required/>
+                        </div>
+                        <label class="col-sm-3 control-label">Release Year</label>
+                        <div class="col-sm-2">
+                            <input [(ngModel)]="selectedMovie.releaseYear" name="releaseYear" type="number" class="form-control" placeholder="year" required/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Production Country</label>
+                        <div class="col-sm-4">
+                            <input [(ngModel)]="selectedMovie.productionCountry" name="productionCountry" type="text" class="form-control" placeholder="Production Country"
+                                required />
+                        </div>
+                        <label class="col-sm-2 control-label">Duration</label>
+                        <div class="col-sm-2">
+                            <input [(ngModel)]="selectedMovie.duration" name="duration" type="number" class="form-control" placeholder="mins" required/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Cover Url</label>
+                        <div class="col-sm-10">
+                            <input [(ngModel)]="selectedMovie.movieCoverUrl" name="coverUrl" type="text" class="form-control" placeholder="https://"
+                                required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-10 col-sm-2">
+                            <button [disabled]="!editMovieForm.valid" (click)="editMovie()" type="submit" class="btn btn-primary" data-dismiss="modal">Edit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- Edit Movie Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Of Edit Movie Modal -->
+
+
+
+<!-- Rent Movie Modal -->
+<div class="modal fade" id="rentMovieModal" tabindex="-1" role="dialog" aria-labelledby="rentMovieModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Rent Movie Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                       <span aria-hidden="true">&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="rentMovieModalLabel"> Rent movie: {{selectedMovie.title}} </h4>
+            </div>
+
+            <!-- Rent Movie Modal Body -->
+            <div class="modal-body">
+                <form class="form-horizontal" role="form" #rentForm="ngForm" name="peselForm">
+                    <div class="form-group">
+                        <label for="pesel" class="col-sm-2 control-label">Pesel</label>
+                        <div class="col-sm-4">
+                            <input #pesel="ngModel" ngControl="pesel" name="pesel" id="pesel" [(ngModel)]="renterPesel" type="text" class="form-control"
+                                placeholder="Pesel" required minlength="11" maxlength="11" />
+                        </div>
+                        <div class="col-sm-4">
+                            <button [disabled]="!pesel.valid" (click)="rentMovie()" type="submit" class="btn btn-primary" data-dismiss="modal">Rent</button>
+                        </div>
+                    </div>
+                    <div class="alert alert-danger" *ngIf="pesel.touched && !pesel.valid">
+                        Enter 11 digit Pesel
+                    </div>
+                </form>
+            </div>
+            <!-- Rent Movie Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Of Rent Movie Modal -->
+
+
 <div id="controlPanel">
-
-    <!-- New Movie Modal -->
-    <div class="modal fade" id="newMovieModal" tabindex="-1" role="dialog" aria-labelledby="newMovieModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <!-- New Movie Modal Header -->
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">
-                       <span aria-hidden="true">&times;</span>
-                       <span class="sr-only">Close</span>
-                </button>
-                    <h4 class="modal-title" id="newMovieModalLabel">
-                        New Movie
-                    </h4>
-                </div>
-
-                <!-- New Movie Modal Body -->
-                <div class="modal-body">
-                    <form class="form-horizontal" role="form">
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Title</label>
-                            <div class="col-sm-4">
-                                <input [(ngModel)]="selectedMovie.title" name="title" type="text" class="form-control" placeholder="Title" />
-                            </div>
-                            <label class="col-sm-2 control-label">Genre</label>
-                            <div class="col-sm-4">
-                                <input [(ngModel)]="selectedMovie.genre" name="genre" type="text" class="form-control" placeholder="Genre" />
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Director</label>
-                            <div class="col-sm-5">
-                                <input [(ngModel)]="selectedMovie.director" name="director" type="text" class="form-control" placeholder="Director" />
-                            </div>
-                            <label class="col-sm-3 control-label">Release Year</label>
-                            <div class="col-sm-2">
-                                <input [(ngModel)]="selectedMovie.releaseYear" name="releaseYear" type="number" class="form-control" placeholder="year" />
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label">Production Country</label>
-                            <div class="col-sm-4">
-                                <input [(ngModel)]="selectedMovie.productionCountry" name="productionCountry" type="text" class="form-control" placeholder="Production Country"
-                                />
-                            </div>
-                            <label class="col-sm-2 control-label">Duration</label>
-                            <div class="col-sm-2">
-                                <input [(ngModel)]="selectedMovie.duration" name="duration" type="number" class="form-control" placeholder="mins" />
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Cover Url</label>
-                            <div class="col-sm-10">
-                                <input [(ngModel)]="selectedMovie.movieCoverUrl" name="coverUrl" type="text" class="form-control" placeholder="https://"
-                                />
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-sm-offset-10 col-sm-2">
-                                <button (click)="addMovie()" type="submit" class="btn btn-primary" data-dismiss="modal">Add</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <!-- New Movie Modal Footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
+    <form id="filter">
+        <label>Filter Movies by title</label>
+        <input type="text" [(ngModel)]="term" name="filter_input" />
+    </form>
+    <div id="sortingSection">
+        <button (click)="sortByName()" type="button" class="btn btn-primary">Sort by title</button>
+        <button (click)="sortByReleaseYear()" type="button" class="btn btn-primary">Sort by release year</button>
     </div>
-    <!-- End Of New Movie Modal -->
-
-    <!-- Edit Movie Modal -->
-    <div class="modal fade" id="newMovieModal" tabindex="-1" role="dialog" aria-labelledby="newMovieModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <!-- Edit Movie Modal Header -->
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">
-                       <span aria-hidden="true">&times;</span>
-                       <span class="sr-only">Close</span>
-                </button>
-                    <h4 class="modal-title" id="newMovieModalLabel">
-                        New Movie
-                    </h4>
-                </div>
-
-                <!-- Edit Movie Modal Body -->
-                <div class="modal-body">
-                    <form class="form-horizontal" role="form">
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Title</label>
-                            <div class="col-sm-4">
-                                <input [(ngModel)]="selectedMovie.title" name="title" type="text" class="form-control" placeholder="Title" />
-                            </div>
-                            <label class="col-sm-2 control-label">Genre</label>
-                            <div class="col-sm-4">
-                                <input [(ngModel)]="selectedMovie.genre" name="genre" type="text" class="form-control" placeholder="Genre" />
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Director</label>
-                            <div class="col-sm-5">
-                                <input [(ngModel)]="selectedMovie.director" name="director" type="text" class="form-control" placeholder="Director" />
-                            </div>
-                            <label class="col-sm-3 control-label">Release Year</label>
-                            <div class="col-sm-2">
-                                <input [(ngModel)]="selectedMovie.releaseYear" name="releaseYear" type="number" class="form-control" placeholder="year" />
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label">Production Country</label>
-                            <div class="col-sm-4">
-                                <input [(ngModel)]="selectedMovie.productionCountry" name="productionCountry" type="text" class="form-control" placeholder="Production Country"
-                                />
-                            </div>
-                            <label class="col-sm-2 control-label">Duration</label>
-                            <div class="col-sm-2">
-                                <input [(ngModel)]="selectedMovie.duration" name="duration" type="number" class="form-control" placeholder="mins" />
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Cover Url</label>
-                            <div class="col-sm-10">
-                                <input [(ngModel)]="selectedMovie.movieCoverUrl" name="coverUrl" type="text" class="form-control" placeholder="https://"
-                                />
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-sm-offset-10 col-sm-2">
-                                <button (click)="addMovie()" type="submit" class="btn btn-primary">Add</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <!-- Edit Movie Modal Footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End Of Edit Movie Modal -->
-
-
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newMovieModal">New Movie</button>
+    <button (click)="resetSelectedMovie()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#newMovieModal">New Movie</button>
 </div>
 
-<div *ngFor="let movie of movies" class="movie">
+<div *ngFor="let movie of movies | filter:term | sort:order:reverse" class="movie">
     <img src={{movie.movieCoverUrl}}>
-    <div class="movieDetails bordered">
+    <div class="movieDetails">
         <div class="movieTitle">{{movie.title}}</div>
         <div class="movieRelease">{{movie.releaseYear}}</div>
     </div>
-    <div class="movieButton bordered">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newMovieModal">Edit Movie</button>
-        <button (click)="rentMovie(movie.id)" type="button" class="btn btn-danger bordered">Rent Movie</button>
+    <div class="movieButton">
+        <button (click)="focusOnMovie(movie.id)" type="button" class="btn btn-primary" data-toggle="modal" data-target="#editMovieModal">Edit Movie</button>
+        <button (click)="focusOnMovie(movie.id)" type="button" class="btn btn-danger" data-toggle="modal" data-target="#rentMovieModal">Rent Movie</button>
     </div>
 </div>

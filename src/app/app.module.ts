@@ -4,9 +4,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpModule, JsonpModule } from '@angular/http';
 
+//import { MovieService } from './movie.service';
 import { AppComponent } from './app.component';
 import { ListComponent } from './list.component';
 import { RentedComponent } from './rented.component';
+import { FilterPipe } from './filter.pipe';
+import { SortPipe } from './sort.pipe'
 
 const appRoutes: Routes = [
   { path: 'a', component: AppComponent },
@@ -25,9 +28,10 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     FormsModule,
     HttpModule,
-    JsonpModule
+    JsonpModule,
   ],
-  declarations: [AppComponent, ListComponent, RentedComponent],
+  declarations: [AppComponent, ListComponent, RentedComponent, FilterPipe, SortPipe],
   bootstrap: [AppComponent]
+ // ,providers: [MovieService]
 })
 export class AppModule { }
